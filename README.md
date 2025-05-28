@@ -1,4 +1,4 @@
-# 🚀 Real-Time Chat Application
+#  Real-Time Chat Application
 
 A modern, feature-rich real-time chat application built with Spring Boot and WebSocket technology. Support text messages, image sharing, and audio file transmission with live preview capabilities.
 
@@ -7,33 +7,33 @@ A modern, feature-rich real-time chat application built with Spring Boot and Web
 ![WebSocket](https://img.shields.io/badge/WebSocket-STOMP-blue)
 ![Frontend](https://img.shields.io/badge/Frontend-HTML5%2FJS-orange)
 
-## ✨ Features
+##  Features
 
-### 💬 Core Chat Features
+###  Core Chat Features
 - **Real-time messaging** - Instant message delivery using WebSocket/STOMP
 - **User identification** - Set your name to identify messages
 - **Message history** - See all messages in the current session
 - **Auto-scroll** - Chat automatically scrolls to newest messages
 
-### 📁 File Sharing
+###  File Sharing
 - **Image sharing** - Send and view images directly in chat
 - **Audio sharing** - Send MP3, WAV, and OGG audio files
 - **File preview** - Preview files before sending
 - **Click to expand** - Click images to view in fullscreen modal
 
-### 🎵 Audio Features
+###  Audio Features
 - **Audio preview** - Listen to audio files before sending
 - **In-chat playback** - Play audio messages with built-in controls
 - **Multiple formats** - Support for MP3, WAV, and OGG formats
 - **File size validation** - Automatic file size checking (5MB limit)
 
-### 🎨 User Interface
+###  User Interface
 - **Modern design** - Clean, responsive Bootstrap-based UI
 - **Message bubbles** - Distinct styling for sent vs received messages
 - **File type icons** - Visual indicators for different file types
 - **Loading states** - User feedback during file processing
 
-## 🛠️ Technology Stack
+##  Technology Stack
 
 ### Backend
 - **Spring Boot** - Main application framework
@@ -47,13 +47,13 @@ A modern, feature-rich real-time chat application built with Spring Boot and Web
 - **SockJS** - WebSocket fallback support
 - **STOMP.js** - Client-side STOMP implementation
 
-## 📋 Prerequisites
+##  Prerequisites
 
 - Java 17 or higher
 - Maven 3.6+
 - Modern web browser with WebSocket support
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### 1. Clone the Repository
 ```bash
@@ -74,7 +74,7 @@ http://localhost:8080/chat
 ```
 ### Or you can run directly at 'ChatApplication.java' if you use IntelliJ IDEA
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 src/
@@ -94,7 +94,7 @@ src/
 │       └── application.properties            # App configuration
 ```
 
-## 🔧 Customization
+##  Customization
 
 ### File Size Limits
 Modify the file size limit in the JavaScript:
@@ -108,7 +108,7 @@ Update the file input accept attribute:
 <input type="file" accept="image/*,audio/*,.mp3,.wav,.ogg">
 ```
 
-## 🐛 Troubleshooting
+##  Troubleshooting
 
 ### Common Issues
 
@@ -134,21 +134,21 @@ logging.level.org.springframework.web.socket=DEBUG
 logging.level.org.springframework.messaging=DEBUG
 ```
 
-## 🚦 Performance Considerations
+##  Performance Considerations
 
 - **File Size**: Large files increase memory usage and transmission time
 - **Concurrent Users**: Each connection consumes server resources
 - **Message History**: Messages are not persisted; consider adding database storage for production
 - **Scaling**: For high-traffic applications, consider using message brokers like RabbitMQ or Redis
 
-## 🛡️ Security Notes
+##  Security Notes
 
 - **Input Validation**: Always validate file types and sizes
 - **XSS Prevention**: Sanitize user input before displaying
 - **CORS Configuration**: Restrict allowed origins in production
 - **File Uploads**: Consider virus scanning for uploaded files
 
-## 🔮 Future Enhancements
+##  Future Enhancements
 
 - [ ] **User Authentication** - Add login/registration system
 - [ ] **Private Messaging** - Direct messages between users
@@ -159,7 +159,7 @@ logging.level.org.springframework.messaging=DEBUG
 - [ ] **Push Notifications** - Browser notifications for new messages
 - [ ] **Mobile App** - React Native or Flutter mobile client
 
-## 🤝 Contributing
+##  Contributing
 
 1. Fork the project
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
