@@ -80,7 +80,7 @@ http://localhost:8080/chat
 src/
 ├── main/
 │   ├── java/
-│   │   └── com/yourpackage/
+│   │   └── com/chap/app/
 │   │       ├── ChatApplication.java          # Main application class
 │   │       ├── controller/
 │   │       │   └── ChatController.java       # WebSocket message handling
