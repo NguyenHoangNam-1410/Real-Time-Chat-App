@@ -99,7 +99,7 @@ src/
 ### File Size Limits
 Modify the file size limit in the JavaScript:
 ```javascript
-const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+const maxSize = 10 * 1024 * 1024; // 10MB in bytes
 ```
 
 ### Supported File Types
