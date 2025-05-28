@@ -16,7 +16,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/chat")
                 .setAllowedOrigins("http://localhost:8080")
                 .withSockJS()
-                .setStreamBytesLimit(512 * 1024) // 512KB
+                .setStreamBytesLimit(10 * 1024 * 1024) // Increased to 10MB
                 .setHttpMessageCacheSize(1000)
                 .setDisconnectDelay(30 * 1000);
     }
@@ -29,8 +29,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
-        registry.setMessageSizeLimit(512 * 1024); // 512KB
-        registry.setSendBufferSizeLimit(5 * 1024 * 1024); // 5MB
+        // This is the key setting that was causing your 512KB limit
+        registry.setMessageSizeLimit(10 * 1024 * 1024); // Increased to 10MB
+        registry.setSendBufferSizeLimit(10 * 1024 * 1024); // Increased to 10MB
         registry.setSendTimeLimit(100000); // 100 seconds
+
+        // Additional buffer settings for large messages
+        registry.setTimeToFirstMessage(30000); // 30 seconds
     }
 }

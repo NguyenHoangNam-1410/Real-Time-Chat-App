@@ -19,7 +19,7 @@
         max-width: 700px;
         margin: auto;
         padding: 30px;
-        background: #ffffff;
+        background: #e1e2e4;
         border-radius: 20px;
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
@@ -67,7 +67,6 @@
 
     .input-group {
         border-radius: 12px;
-        overflow: hidden;
     }
 
     .form-control {
@@ -189,7 +188,7 @@
             <button id="sendMessage" class="btn btn-primary" type="button">Send</button>
         </div>
 
-        <div class="input-group mt-2 align-items-center" id="fileGroup">
+        <div class="input-group mt-3" id="fileGroup">
             <input id="fileInput" type="file" class="form-control" accept="image/*,audio/*,.mp3,.wav,.ogg">
             <button class="btn btn-outline-danger" type="button" id="clearFile" title="Remove attachment">❌</button>
         </div>
@@ -356,27 +355,65 @@
             return;
         }
 
+        // Check text message length limit (before file processing)
+        if (message.trim() !== '') {
+            const messageLength = message.length;
+            const maxTextLength = 10000; // 10,000 characters limit
+
+            if (messageLength > maxTextLength) {
+                alert(`Message is too long (${messageLength.toLocaleString()} characters). Please limit to ${maxTextLength.toLocaleString()} characters or less.`);
+                console.log(`Message length: ${messageLength} characters exceeds limit of ${maxTextLength} characters`);
+                return;
+            }
+
+            // Warning for long messages
+            if (messageLength > 1000) {
+                console.log(`Long message detected: ${messageLength} characters`);
+            }
+        }
+
         if (fileInput) {
             // Check file size (limit to 5MB)
-            const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+            const maxSize = 7.6 * 1024 * 1024; // 7.6MB in bytes
             if (fileInput.size > maxSize) {
-                alert('File size too large. Please select a file smaller than 5MB.');
+                alert('File size too large, removing file to prevent send failure');
+
+                // Clear the file input
+                document.getElementById('fileInput').value = '';
+                hideFilePreview();
+
+                // Log user-friendly message
+                console.log(`File removed: File was too large (>${(maxSize/(1024*1024)).toFixed(1)}MB). Please select a smaller file.`);
+
+                // Return early to prevent sending
                 return;
             }
 
             const reader = new FileReader();
             reader.onload = function (e) {
-                var base64Data = e.target.result;
+                const base64Data = e.target.result;
 
                 // If it's an audio file, try to compress it
-                if (fileInput.type.startsWith('audio/') && base64Data.length > 200000) { // If larger than ~150KB
-                    console.log('Large audio file detected, consider compression');
-                    // For now, we'll just warn but still try to send
-                    if (base64Data.length > 1000000) { // ~750KB
-                        alert('Audio file is very large and might fail to send. Consider using a smaller file.');
+                if (fileInput.type.startsWith('audio/')) {
+                    const fileSizeMB = (fileInput.size / (1024 * 1024)).toFixed(1);
+                    console.log(`Audio file size: ${fileSizeMB}MB`);
+
+                    // Estimate audio duration based on common formats
+                    let estimatedMinutes;
+                    if (fileInput.type.includes('wav')) {
+                        estimatedMinutes = fileInput.size / (10 * 1024 * 1024); // ~10MB per minute for WAV
+                    } else if (fileInput.type.includes('mp3')) {
+                        estimatedMinutes = fileInput.size / (2.4 * 1024 * 1024); // ~2.4MB per minute for MP3 320kbps
+                    } else {
+                        estimatedMinutes = fileInput.size / (1.5 * 1024 * 1024); // ~1.5MB per minute average
+                    }
+
+                    if (estimatedMinutes > 3) {
+                        console.log(`Warning: Audio file is approximately ${estimatedMinutes.toFixed(1)} minutes long. Consider using shorter clips for better performance.`);
                     }
                 }
-                var chatMessage = {
+
+                const chatMessage = {
                     sender: sender,
                     message: message.trim() || null
                 };
@@ -424,6 +461,103 @@
         document.getElementById('fileInput').value = '';
         hideFilePreview();
     }
+    //
+    // // HTML escaping function to prevent XSS
+    // function escapeHtml(unsafe) {
+    //     return unsafe
+    //         .replace(/&/g, "&amp;")
+    //         .replace(/</g, "&lt;")
+    //         .replace(/>/g, "&gt;")
+    //         .replace(/"/g, "&quot;")
+    //         .replace(/'/g, "&#039;");
+    // }
+    //
+    // // Enhanced version that preserves line breaks
+    // function escapeHtmlWithLineBreaks(unsafe) {
+    //     return escapeHtml(unsafe)
+    //         .replace(/\n/g, "<br>")
+    //         .replace(/\r/g, "");
+    // }
+    //
+    // // Function to display chat messages safely
+    // function displayMessage(messageData) {
+    //     const messageContainer = document.createElement('div');
+    //     messageContainer.className = 'message';
+    //
+    //     // Safely escape the sender name and message
+    //     const safeSender = escapeHtml(messageData.sender);
+    //     const safeMessage = escapeHtmlWithLineBreaks(messageData.message || '');
+    //
+    //     let messageHtml = `<strong>${safeSender}:</strong> `;
+    //
+    //     if (safeMessage) {
+    //         messageHtml += safeMessage;
+    //     }
+    //
+    //     // Handle images safely (base64 data should be safe, but validate)
+    //     if (messageData.imageData && messageData.imageData.startsWith('data:image/')) {
+    //         messageHtml += `<br><img src="${messageData.imageData}" style="max-width: 300px; max-height: 300px;" alt="Shared image">`;
+    //     }
+    //
+    //     // Handle audio safely
+    //     if (messageData.audioData && messageData.audioData.startsWith('data:audio/')) {
+    //         messageHtml += `<br><audio controls><source src="${messageData.audioData}"></audio>`;
+    //     }
+    //
+    //     messageContainer.innerHTML = messageHtml;
+    //
+    //     // Add to chat
+    //     document.getElementById('messages').appendChild(messageContainer);
+    //
+    //     // Scroll to bottom
+    //     const messagesDiv = document.getElementById('messages');
+    //     messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    // }
+    //
+    // // Alternative: Use textContent for pure text (no HTML at all)
+    // function displayMessageTextOnly(messageData) {
+    //     const messageContainer = document.createElement('div');
+    //     messageContainer.className = 'message';
+    //
+    //     // Create sender element
+    //     const senderElement = document.createElement('strong');
+    //     senderElement.textContent = messageData.sender + ': ';
+    //     messageContainer.appendChild(senderElement);
+    //
+    //     // Create message element (pure text)
+    //     if (messageData.message) {
+    //         const messageElement = document.createElement('span');
+    //         messageElement.textContent = messageData.message;
+    //         messageContainer.appendChild(messageElement);
+    //     }
+    //
+    //     // Handle media files
+    //     if (messageData.imageData && messageData.imageData.startsWith('data:image/')) {
+    //         const img = document.createElement('img');
+    //         img.src = messageData.imageData;
+    //         img.style.maxWidth = '300px';
+    //         img.style.maxHeight = '300px';
+    //         img.alt = 'Shared image';
+    //         messageContainer.appendChild(document.createElement('br'));
+    //         messageContainer.appendChild(img);
+    //     }
+    //
+    //     if (messageData.audioData && messageData.audioData.startsWith('data:audio/')) {
+    //         const audio = document.createElement('audio');
+    //         audio.controls = true;
+    //         const source = document.createElement('source');
+    //         source.src = messageData.audioData;
+    //         audio.appendChild(source);
+    //         messageContainer.appendChild(document.createElement('br'));
+    //         messageContainer.appendChild(audio);
+    //     }
+    //
+    //     document.getElementById('messages').appendChild(messageContainer);
+    //
+    //     // Scroll to bottom
+    //     const messagesDiv = document.getElementById('messages');
+    //     messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    // }
 
     // Ensure the DOM is fully loaded before binding events
     window.addEventListener('DOMContentLoaded', function () {
