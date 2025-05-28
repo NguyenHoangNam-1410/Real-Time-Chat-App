@@ -3,7 +3,7 @@
 A modern, feature-rich real-time chat application built with Spring Boot and WebSocket technology. Support text messages, image sharing, and audio file transmission with live preview capabilities.
 
 ![Chat Application Demo](https://img.shields.io/badge/Status-Active-brightgreen)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5-brightgreen)
 ![WebSocket](https://img.shields.io/badge/WebSocket-STOMP-blue)
 ![Frontend](https://img.shields.io/badge/Frontend-HTML5%2FJS-orange)
 
@@ -57,7 +57,7 @@ A modern, feature-rich real-time chat application built with Spring Boot and Web
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/NguyenHoangNam-1410/realtime-chat-app.git
+git clone https://github.com/NguyenHoangNam-1410/Real-Time-Chat-App.git
 cd realtime-chat-app
 ```
 
