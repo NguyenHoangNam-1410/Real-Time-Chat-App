@@ -219,14 +219,14 @@
 </body>
 <script>
     // Global variables
-    var stompClient = null;
+    let stompClient = null;
 
     function setConnected(connected) {
         document.getElementById('sendMessage').disabled = !connected;
     }
 
     function connect() {
-        var socket = new SockJS('/chat');
+        let socket = new SockJS('/chat');
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             // Successfully connected
@@ -243,9 +243,9 @@
     }
 
     function showMessage(message) {
-        var chat = document.getElementById('chat');
-        var messageElement = document.createElement('div');
-        var isSender = document.getElementById('senderInput').value === message.sender;
+        const chat = document.getElementById('chat');
+        const messageElement = document.createElement('div');
+        const isSender = document.getElementById('senderInput').value === message.sender;
         messageElement.className = 'chat-message ' + (isSender ? 'outgoing' : 'incoming');
         let content = `<span class="message-sender">${message.sender}:</span>`;
 
@@ -373,7 +373,7 @@
         }
 
         if (fileInput) {
-            // Check file size (limit to 5MB)
+            // Check file size
             const maxSize = 7.6 * 1024 * 1024; // 7.6MB in bytes
             if (fileInput.size > maxSize) {
                 alert('File size too large, removing file to prevent send failure');
@@ -589,8 +589,8 @@
         // Open modal on image click
         document.addEventListener('click', function (e) {
             if (e.target.tagName === 'IMG' && e.target.closest('.chat-message') && e.target.style.cursor === 'pointer') {
-                var modal = document.getElementById('imageModal');
-                var modalImg = document.getElementById('modalImage');
+                const modal = document.getElementById('imageModal');
+                const modalImg = document.getElementById('modalImage');
                 modal.style.display = 'flex';
                 modalImg.src = e.target.src;
             }
